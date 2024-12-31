@@ -26,7 +26,7 @@ def preprocess(data):
     user = []
     messages = []
     for message_content in df['user_message']:
-        entry = re.split('([\w\W]+?):\s', message_content)
+        entry = re.split('([\\w\W]+?):\s', message_content)
         if entry[1:]:  # User name exists
             user.append(entry[1])
             messages.append(entry[2])
