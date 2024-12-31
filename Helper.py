@@ -4,27 +4,30 @@ import pandas as pd
 from collections import Counter
 import emoji
 
-extractor = URLExtract()
-
+extract = URLExtract()
 
 def fetch_stats(selected_user,df):
 
-    if selected_user != 'overall':
+    if selected_user != 'Overall':
         df = df[df['user'] == selected_user]
 
+    # fetch the number of messages
     num_messages = df.shape[0]
+
+    # fetch the total number of words
     words = []
     for message in df['message']:
         words.extend(message.split())
 
-    num_media_messages = df[df['message'] == "<Media omitted>"].shape[0]
+    # fetch number of media messages
+    num_media_messages = df[df['message'] == '<Media omitted>\n'].shape[0]
 
-    urls = []
+    # fetch number of links shared
+    links = []
     for message in df['message']:
-        urls.extend(extractor.find_urls(message))
+        links.extend(extract.find_urls(message))
 
-    return num_messages, len(words), num_media_messages, len(urls)
-
+    return num_messages,len(words),num_media_messages,len(links)
 
 def most_busy_users(df):
     x = df['user'].value_counts().head()
@@ -134,4 +137,5 @@ def activity_heatmap(selected_user,df):
     user_heatmap = df.pivot_table(index='day_name', columns='period', values='message', aggfunc='count').fillna(0)
 
     return user_heatmap
+
 
