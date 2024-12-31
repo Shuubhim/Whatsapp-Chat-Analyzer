@@ -48,7 +48,7 @@ This project is a comprehensive **WhatsApp chat data analysis tool** built with 
 - Integration with databases for storing and analyzing large chat datasets.
 - Enhanced user interface and visual customization.
 
-Feel free to fork, contribute, and make suggestions! 
+Feel free to fork, contribute, and make suggestions!
 
 ---
 
