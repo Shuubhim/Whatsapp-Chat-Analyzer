@@ -35,7 +35,7 @@ This project is a comprehensive **WhatsApp chat data analysis tool** built with 
    ```
 3. Run the Streamlit app:
    ```bash
-   streamlit run app.py
+   streamlit run main.py
    ```
 
 ### How to Use:
