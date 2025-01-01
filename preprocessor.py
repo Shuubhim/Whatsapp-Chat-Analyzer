@@ -2,31 +2,43 @@ import re
 import pandas as pd
 
 def preprocess(data):
-    # Define the regex pattern
-    pattern = r'(\d{1,2}/\d{1,2}/\d{2,4}, \d{1,2}:\d{2}\s?(?:am|pm)?) - (.+)'
+    # Open and read the WhatsApp chat file
 
-    # Match all messages
+    # Define the regex pattern to capture date/time and message separately
+    pattern = r'(\d{1,2}/\d{1,2}/\d{2,4}, (?:[01]?\d|2[0-3]):\d{2}(?:\s?[apAP][mM])?) - (.+)'
+
+    # Extract date/time and messages using re.findall
     all_messages = re.findall(pattern, data)
 
-    # Extract messages and clean dates
-    messages = [message[1] for message in all_messages]
-    cleaned_date_time = [message[0].replace('\u202f', ' ') for message in all_messages]
+    # Separate messages and date/time into lists
+    cleaned_date_time = [item[0].replace('\u202f', ' ') for item in all_messages]
+    messages = [item[1] for item in all_messages]
 
-    # Create DataFrame
-    df = pd.DataFrame({'user_message': messages, 'message_date': cleaned_date_time})
-    try:
-        df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %I:%M %p')
-    except Exception as e:
-        print("DateTime Parsing Error:", e)
-        raise e
+    # Create the DataFrame
+    df = pd.DataFrame({'message_date': cleaned_date_time, 'user_message': messages})
 
+    # Convert `message_date` to datetime, handling both 12-hour and 24-hour formats
+    date_formats = ['%d/%m/%Y, %I:%M %p', '%d/%m/%Y, %H:%M', '%d/%m/%y, %I:%M %p', '%d/%m/%y, %H:%M']
+
+    for fmt in date_formats:
+        try:
+            df['message_date'] = pd.to_datetime(df['message_date'], format=fmt)
+            break  # Exit loop once a format works
+        except ValueError:
+            continue
+
+    # Rename the column
     df.rename(columns={'message_date': 'date'}, inplace=True)
+
+    # Output the first few rows of the DataFrame
+    # print(df.sample(10))
+
 
     # Parse user and message content
     user = []
     messages = []
     for message_content in df['user_message']:
-        entry = re.split('([\w\W]+?):\s', message_content)
+        entry = re.split(r'([\w\W]+?):\s', message_content)
         if entry[1:]:  # User name exists
             user.append(entry[1])
             messages.append(entry[2])
