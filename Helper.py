@@ -44,7 +44,7 @@ def create_wordcloud(selected_user,df):
         df = df[df['user'] == selected_user]
 
     temp = df[df['user'] != 'group_notification']
-    temp = temp[temp['message'] != '<Media omitted>\n']
+    temp = temp[temp['message'] != '<Media omitted>']
 
     def remove_stop_words(message):
         y = []
@@ -67,7 +67,7 @@ def most_common_words(selected_user,df):
         df = df[df['user'] == selected_user]
 
     temp = df[df['user'] != 'group_notification']
-    temp = temp[temp['message'] != '<Media omitted>\n']
+    temp = temp[temp['message'] != '<Media omitted>']
 
     words = []
 
