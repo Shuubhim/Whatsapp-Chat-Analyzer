@@ -74,11 +74,11 @@ if uploaded_file is not None:
             ax.bar(busy_month.index, busy_month.values,color='orange')
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
-
+            
         st.title("Weekly Activity Map")
         user_heatmap = Helper.activity_heatmap(selected_user,df)
         fig,ax = plt.subplots()
-        ax = sns.heatmap(user_heatmap)
+        ax = sns.heatmap(user_heatmap,cmap="crest",annot=True, linewidth=.3)
         st.pyplot(fig)
 
         # finding the busiest users in the group(Group level)
