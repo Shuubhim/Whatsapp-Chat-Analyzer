@@ -78,7 +78,7 @@ if uploaded_file is not None:
         st.title("Weekly Activity Map")
         user_heatmap = Helper.activity_heatmap(selected_user,df)
         fig,ax = plt.subplots()
-        ax = sns.heatmap(user_heatmap,cmap="crest",annot=True, linewidth=.3)
+        ax = sns.heatmap(user_heatmap, cmap='viridis', annot=True, fmt='.0f', linewidths=0.5, annot_kws={"size": 6})
         st.pyplot(fig)
 
         # finding the busiest users in the group(Group level)
